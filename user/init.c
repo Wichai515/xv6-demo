@@ -9,7 +9,8 @@
 #include "user/user.h"
 #include "kernel/fcntl.h"
 
-char *argv[] = { "sh", 0 };
+char *sh_argv[] = { "sh", 0 };
+char *primes_argv[] = { "primes", 0 };
 
 int
 main(void)
@@ -22,7 +23,21 @@ main(void)
   }
   dup(0);  // stdout
   dup(0);  // stderr
-
+/*
+  printf("init: starting primes\n");
+  pid = fork();
+  if(pid < 0){
+    printf("init: fork failed\n");
+    exit(1);
+  }
+  if(pid == 0){
+    exec("primes", primes_argv);
+    printf("init: exec primes failed\n");
+    exit(1);
+  }
+  // Wait for the primes process to finish
+  wait((int *) 0);
+*/
   for(;;){
     printf("init: starting sh\n");
     pid = fork();
@@ -31,7 +46,7 @@ main(void)
       exit(1);
     }
     if(pid == 0){
-      exec("sh", argv);
+      exec("sh", sh_argv);
       printf("init: exec sh failed\n");
       exit(1);
     }

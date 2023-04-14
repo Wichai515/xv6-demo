@@ -10,6 +10,9 @@ fmtname(char *path)
   char *p;
 
   // Find first character after last slash.
+  //初始化指针p，使其指向path的最后一个字符;
+  //然后使用循环向前查找第一个/字符。
+  //循环结束后，将p指向/之后的字符，即文件名的第一个字符。
   for(p=path+strlen(path); p >= path && *p != '/'; p--)
     ;
   p++;
@@ -17,9 +20,10 @@ fmtname(char *path)
   // Return blank-padded name.
   if(strlen(p) >= DIRSIZ)
     return p;
-  memmove(buf, p, strlen(p));
+  memmove(buf, p, strlen(p));//将文件名从p复制到buf
   memset(buf+strlen(p), ' ', DIRSIZ-strlen(p));
-  return buf;
+  //使用memset()在buf中剩余的空间填充空格字符（' '）
+  return buf;  //返回固定长度(DIRSIZ+1)的字符串
 }
 
 void
@@ -78,8 +82,8 @@ main(int argc, char *argv[])
   if(argc < 2){
     ls(".");
     exit(0);
-  }
+  }   //查看当前目录
   for(i=1; i<argc; i++)
-    ls(argv[i]);
+    ls(argv[i]);  //查看指定目录
   exit(0);
 }
